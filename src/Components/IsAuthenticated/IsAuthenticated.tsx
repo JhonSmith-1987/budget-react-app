@@ -1,56 +1,37 @@
-import {LoginStyled} from "./LoginStyled";
-import {useForm} from "react-hook-form";
-import {LoginFormModel} from "../../Models/LoginFormModel";
+import {IsAuthenticatedStyled} from "./IsAuthenticatedStyled";
+import {ReactNode, useEffect} from "react";
+import {auth} from "../../Firebase/Firebase";
+import {useAppDispatch} from "../../Utils/HooksRedux";
+import {getUserActive} from "../../Redux/Actions/UserActions";
 
 interface ILoginProps {
-    click: () => void;
+    children: ReactNode
 }
 
-export default function Login({
-                                  click,
-                              }: ILoginProps): JSX.Element {
+export default function IsAuthenticated({
+                                            children,
+                                        }: ILoginProps): JSX.Element {
 
-    const {register, reset, handleSubmit, formState: {errors}} = useForm<LoginFormModel>();
+    const dispatch = useAppDispatch();
 
-    const onSubmitLogin = (data:LoginFormModel) => handleLogin(data);
 
-    function handleLogin(data: LoginFormModel) {
-        console.log(data);
-    }
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+        console.log(unsubscribe);
+        if (user) {
+            const userId = user.uid;
+            dispatch(getUserActive(userId)).then(r => {
+                //
+            });
+        }
+    });
+    
+    useEffect(() => {
+        unsubscribe();
+    }, [unsubscribe]);
 
     return (
-        <LoginStyled>
-            <h1 className="title-log-in">Ingresa tus datos</h1>
-            <form className="container-form-login" onSubmit={handleSubmit(onSubmitLogin)}>
-                <div className="container-input">
-                    <label
-                        htmlFor="email"
-                    >
-                        Correo electrónico
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Ingresa tu correo electrónico"
-                        {...register('email')}
-                    />
-                </div>
-                <div className="container-input">
-                    <label
-                        htmlFor="password"
-                    >
-                        Contraseña
-                    </label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Ingresa tu contraseña"
-                        {...register('password')}
-                    />
-                </div>
-                <button className="button-login" type={"submit"}>Iniciar sesión</button>
-            </form>
-            <span onClick={click} className="go-sign-in">No tienes usuario? has click aqui y regístrate</span>
-        </LoginStyled>
+        <IsAuthenticatedStyled>
+            {children}
+        </IsAuthenticatedStyled>
     );
 }

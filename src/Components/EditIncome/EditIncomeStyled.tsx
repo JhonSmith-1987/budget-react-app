@@ -14,7 +14,7 @@ import {Device} from "../../Utils/devices";
 *
 * */
 
-export const IncomeStyled = styled.div`
+export const EditIncomeStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

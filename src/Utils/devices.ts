@@ -17,5 +17,5 @@ export const Device = {
   laptop: `only screen and (min-width: ${size.laptop}) and (max-width: 1439px)`,
   laptopL: `only screen and (min-width: ${size.laptopL}) and (max-width: 1679px)`,
   desktop: `only screen and (min-width: ${size.desktop}) and (max-width: 1919px)`,
-  desktopL: `only screen and (min-width: ${size.desktopL}) and screen (max-width: 4080)`,
+  desktopL: `only screen and (min-width: ${size.desktopL}) and (max-width: 4080)`,
 };
